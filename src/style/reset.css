@@ -1,0 +1,79 @@
+html,
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f1f1f1;
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-user-drag: none;
+    touch-action: auto;
+}
+
+li {
+    list-style: none;
+}
+
+.text-button {
+    color: #1989fa;
+    font-size: 17px;
+    cursor: pointer;
+
+    &:not(.disabled):active {
+        color: #64abf4;
+    }
+}
+
+input {
+    caret-color: #1989fa;
+    border: 2px solid #1989fa;
+}
+
+.disabled {
+    color: #b2b2b2;
+}
+
+.van-nav-bar {
+    z-index: 0 !important;
+}
+
+.van-nav-bar__text {
+    font-size: 17px !important;
+}
+
+.van-search__content {
+    border-radius: 10px !important;
+}
+
+.van-search--show-action {
+    padding-right: 8px !important;
+}
+
+.van-swipe-cell__right, .van-swipe-cell__left {
+    button[class*="van-button"] {
+        height: 100% !important;
+    }
+}
+
+.van-popover__action--with-icon {
+    /*border-bottom: 1px solid #ebedf0;*/
+    /*border-color: #ebedf0;*/
+}
+
+.van-popup--bottom {
+    max-width: 540px;
+    margin: 0 auto;
+    left: revert !important;
+}
+
+.van-action-bar__placeholder {
+    height: 50px;
+}
+
+.van-haptics-feedback:active {
+    opacity: 1 !important;
+}

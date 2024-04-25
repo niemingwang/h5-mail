@@ -1,13 +1,58 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + Vue + TS</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Easy mail</title>
+  <style>
+      @keyframes spinner-line-fade-more {
+          0%, 100% {
+              opacity: 0; /* minimum opacity */
+          }
+          1% {
+              opacity: 1;
+          }
+      }
+
+      @keyframes spinner-line-fade-quick {
+          0%, 39%, 100% {
+              opacity: 0.25; /* minimum opacity */
+          }
+          40% {
+              opacity: 1;
+          }
+      }
+
+      @keyframes spinner-line-fade-default {
+          0%, 100% {
+              opacity: 0.22; /* minimum opacity */
+          }
+          1% {
+              opacity: 1;
+          }
+      }
+
+      @keyframes spinner-line-shrink {
+          0%, 25%, 100% {
+              /* minimum scale and opacity */
+              transform: scale(0.5);
+              opacity: 0.25;
+          }
+          26% {
+              transform: scale(1);
+              opacity: 1;
+          }
+      }
+  </style>
+  <script type="module" src="/spin.js"></script>
+</head>
+<body>
+<div id="app">
+  <div id="spin"></div>
+</div>
+<script type="module" src="/src/main.ts"></script>
+</body>
 </html>
