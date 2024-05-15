@@ -7,9 +7,6 @@
       <TextButton @click="handleBeforeClose() ? show = false : ''">
         <van-icon name="cross" :size="22" color="#1d1d1f" />
       </TextButton>
-      <van-text-ellipsis v-show="showTitle" :content="subject"
-                         style="max-width: 50%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap" />
-      <van-icon v-show="showTitle" :name="canSend ? Icons.arrowUpActive: Icons.arrowUp" :size="26" />
     </div>
     <van-divider v-show="showTitle" style="margin: 0" />
 
@@ -20,15 +17,29 @@
       </div>
     </div>
 
-    <van-form :label-width="50">
-      <van-field ref="receiverRef" type="textarea" name="收件人" label="收件人" colon v-model="mailFormModel.receiver"
-                 rows="1" autosize></van-field>
-      <van-field type="textarea" name="发件人" label="发件人" colon v-model="mailFormModel.from" rows="1"
-                 autosize></van-field>
-      <van-field type="textarea" name="主题" label="主题" colon v-model="mailFormModel.subject" rows="1"
-                 autosize></van-field>
-      <van-field type="textarea" name="内容" v-model="mailFormModel.content" :rows="10" autosize></van-field>
-    </van-form>
+    <van-space fill :size="5" direction="vertical" style="padding: 0 16px">
+      <InputTagField label="收件人：" @change="onReceiverChange" >
+        <template #suffix>
+          <TextButton show-icon>
+            <van-icon :name="Icons.addressBook" :size="26" />
+          </TextButton>
+        </template>
+      </InputTagField>
+      <van-divider style="margin: 0" />
+      <InputTagField label="抄送：" @change="onReceiverChange" >
+        <template #suffix>
+          <TextButton show-icon>
+            <van-icon :name="Icons.addressBook" :size="26" />
+          </TextButton>
+        </template>
+      </InputTagField>
+      <van-divider style="margin: 0" />
+      <InputTagField label="发件人：" :tag="false" v-model="mailFormModel.from" />
+      <van-divider style="margin: 0" />
+      <InputTagField :tag="false" label="主题：" v-model="mailFormModel.subject" />
+      <van-divider style="margin: 0" />
+      <van-field style="padding: 0" type="textarea" name="内容" v-model="mailFormModel.content" :rows="10" autosize></van-field>
+    </van-space>
   </van-popup>
 
   <van-dialog v-model:show="showWarning" :showConfirmButton="false">
@@ -54,6 +65,12 @@ import { useSystemStore } from "@/store/system.ts";
 import Icons from "@/assets/icons/svgs";
 import { useElementBounding } from "@vueuse/core";
 import TextButton from '@/components/TextButton/index.vue'
+import InputTagField from '@/components/InputTagField/index.vue'
+
+interface TagsProps {
+  value: string
+  valid: boolean
+}
 
 const systemStore = useSystemStore()
 const show = computed({
@@ -78,9 +95,9 @@ onMounted(() => {
   })
 })
 
-const mailFormModel = reactive({
-  from: '',
-  receiver: '',
+const mailFormModel = reactive<{ from: string, receiver: TagsProps[], subject: string, content: string }>({
+  from: '聂明旺<1984607221@qq.com>',
+  receiver: [],
   subject: '',
   content: '\n\n发自我的iPhone',
 })
@@ -93,6 +110,10 @@ const canSend = computed(() => {
   return mailFormModel.from && mailFormModel.receiver && mailFormModel.subject && mailFormModel.content
 })
 
+function onReceiverChange(val: TagsProps[]) {
+  mailFormModel.receiver = val
+}
+
 function onOpen() {
   document.documentElement.style.overflow = 'hidden'
 }
@@ -104,7 +125,7 @@ function onClose() {
 const showWarning = ref(false)
 
 function handleBeforeClose() {
-  if (mailFormModel.from || mailFormModel.receiver || mailFormModel.subject) {
+  if (mailFormModel.from || mailFormModel.receiver.length || mailFormModel.subject) {
     showWarning.value = true
     return false
   } else {
@@ -115,13 +136,14 @@ function handleBeforeClose() {
 function onWarnSelect(val: string) {
   console.log(val);
   showWarning.value = false
+  show.value = false
 }
 </script>
 
 <style>
 .new-mail-sheet {
-  height: 90% !important;
-  overflow: auto;
+  height: 95% !important;
+  overflow-x: hidden;
 }
 
 .new-mail-sheet__header {
@@ -142,7 +164,7 @@ function onWarnSelect(val: string) {
   width: 100%;
   background-color: #ffffff;
   padding: 6px 16px;
-  font-size: 21px;
+  font-size: 28px;
   font-weight: bold;
 }
 

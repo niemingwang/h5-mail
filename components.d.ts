@@ -10,6 +10,7 @@ declare module 'vue' {
     ActionBar: typeof import('./src/components/ActionBar/index.vue')['default']
     EmailCell: typeof import('./src/components/EmailCell/index.vue')['default']
     EmailList: typeof import('./src/components/EmailList/index.vue')['default']
+    InputTagField: typeof import('./src/components/InputTagField/index.vue')['default']
     Navigator: typeof import('./src/components/Navigator/index.vue')['default']
     NewMailSheet: typeof import('./src/components/NewMailSheet/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
@@ -34,6 +35,7 @@ declare module 'vue' {
     VanSpace: typeof import('vant/es')['Space']
     VanSticky: typeof import('vant/es')['Sticky']
     VanSwipeCell: typeof import('vant/es')['SwipeCell']
+    VanTag: typeof import('vant/es')['Tag']
     VanTextEllipsis: typeof import('vant/es')['TextEllipsis']
   }
 }

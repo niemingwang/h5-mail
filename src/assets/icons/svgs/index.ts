@@ -14,6 +14,7 @@ import filter from './filter.svg'
 import filterFill from './filter-fill.svg'
 import avatar from './avatar.svg'
 import mail from './mail.svg'
+import addressBook from './address-book.svg'
 
 const Icons = {
   archive,
@@ -32,6 +33,7 @@ const Icons = {
   filterFill,
   avatar,
   mail,
+  addressBook
 }
 
 export default Icons
