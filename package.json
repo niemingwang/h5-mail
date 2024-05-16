@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@vant/touch-emulator": "^1.4.0",
+    "@vueup/vue-quill": "^1.0.0-alpha.40",
     "@vueuse/core": "^10.9.0",
     "amfe-flexible": "^2.2.1",
     "pinia": "^2.1.7",

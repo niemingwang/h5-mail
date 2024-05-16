@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ActionBar: typeof import('./src/components/ActionBar/index.vue')['default']
+    Editor: typeof import('./src/components/Editor/index.vue')['default']
     EmailCell: typeof import('./src/components/EmailCell/index.vue')['default']
     EmailList: typeof import('./src/components/EmailList/index.vue')['default']
     InputTagField: typeof import('./src/components/InputTagField/index.vue')['default']

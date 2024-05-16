@@ -13,7 +13,7 @@
     <div class="mail-title" ref="titleRef">
       <div class="action-title">
         <van-text-ellipsis style="flex: 1" :content="subject" />
-        <van-icon :name="canSend ? Icons.arrowUpActive: Icons.arrowUp" :size="36" />
+        <van-icon :name="canSend ? Icons.arrowUpActive: Icons.arrowUp" :size="40" />
       </div>
     </div>
 
@@ -38,7 +38,8 @@
       <van-divider style="margin: 0" />
       <InputTagField :tag="false" label="主题：" v-model="mailFormModel.subject" />
       <van-divider style="margin: 0" />
-      <van-field style="padding: 0" type="textarea" name="内容" v-model="mailFormModel.content" :rows="10" autosize></van-field>
+<!--      <van-field style="padding: 0" type="textarea" name="内容" v-model="mailFormModel.content" :rows="10" autosize></van-field>-->
+      <Editor></Editor>
     </van-space>
   </van-popup>
 
@@ -66,6 +67,7 @@ import Icons from "@/assets/icons/svgs";
 import { useElementBounding } from "@vueuse/core";
 import TextButton from '@/components/TextButton/index.vue'
 import InputTagField from '@/components/InputTagField/index.vue'
+import Editor from '@/components/Editor/index.vue'
 
 interface TagsProps {
   value: string
