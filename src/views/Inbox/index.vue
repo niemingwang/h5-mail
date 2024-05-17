@@ -1,23 +1,31 @@
 <template>
-  <section>
-    <Navbar :show-title="showTitle" @select-all="onSelectedAll" :is-selected-all="isSelectedAll"
+  <section class="mail-list-box">
+    <Navbar @select-all="onSelectedAll" :is-selected-all="isSelectedAll"
             :selected-count="selectedIds.length" :border="showTitle" />
 
-    <van-pull-refresh v-model="loading" @refresh="onRefresh">
-      <div class="mail-title" ref="titleRef" :style="{display: focus ? 'none' : 'block'}">
-        <span>{{ isEdit && selectedIds.length ? `已选${selectedIds.length}封` : systemStore.mailKind }}</span>
-        <span class="mail-title--desc">
+    <div class="mail-title" :style="{display: focus ? 'none' : 'block'}">
+      <span>{{ isEdit && selectedIds.length ? `已选${selectedIds.length}封` : systemStore.mailKind }}</span>
+      <span class="mail-title--desc">
           <van-text-ellipsis :content="emails.length + ' 封邮件'" />
         </span>
-      </div>
-      <van-divider style="margin: 0; padding: 0 16px" />
-      <van-search @focus="focus = true" @blur="focus = false" :show-action="focus" placeholder="搜索" />
-      <van-divider style="margin: 0; padding: 0 16px" />
-      <EmailList :mails="emails" @checked-change="handleChecked" :selected-ids="selectedIds"
-                 @mail-click="omMailClick" />
-    </van-pull-refresh>
+    </div>
 
-    <ActionBar v-show="systemStore.isEdit">
+    <van-divider style="margin: 0; padding: 0 16px" />
+    <van-search @focus="focus = true" @blur="focus = false" :show-action="focus" placeholder="搜索" />
+    <van-divider style="margin: 0; padding: 0 16px" />
+
+    <van-list style="overflow: hidden auto;z-index:1;padding-bottom: 20px" @load="onLoad" v-model:loading="loadMore"
+              safe-area-inset-bottom>
+      <van-pull-refresh v-model="loading" @refresh="onRefresh">
+        <EmailList :mails="emails" @checked-change="handleChecked" :selected-ids="selectedIds"
+                   @mail-click="omMailClick" />
+      </van-pull-refresh>
+
+      <van-back-top right="5vw" bottom="10vh" />
+
+    </van-list>
+
+    <ActionBar v-show="systemStore.isEdit" style="z-index: 2">
       <template #left>
         <van-icon :name="Icons.filterFill" size="26" />
       </template>
@@ -37,16 +45,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, computed } from 'vue'
+import { ref, watch, computed } from 'vue'
 import type { Ref } from 'vue'
-import Navbar from '@/views/Mail/Navbar/index.vue'
+import Navbar from '@/views/Inbox/Navbar/index.vue'
 import EmailList from '@/components/EmailList/index.vue'
 import ActionBar from '@/components/ActionBar/index.vue'
 import emails from '@/mock/emails.ts'
 import { useSystemStore } from "@/store/system.ts";
 import { useRouter } from "vue-router";
 import Icons from "@/assets/icons/svgs";
-import { useElementBounding } from '@vueuse/core'
 
 type Email = {
   id: string,
@@ -57,7 +64,6 @@ type Email = {
   status: string
 }
 
-const titleRef = ref(null)
 const showTitle = ref(false)
 const systemStore = useSystemStore()
 const router = useRouter()
@@ -71,20 +77,6 @@ const onRefresh = () => {
     loading.value = false;
   }, 1000);
 };
-
-onMounted(() => {
-  watch(titleRef, () => {
-    loading.value = true
-    setTimeout(() => {
-      loading.value = false
-    }, 1000)
-  }, {once: true})
-
-  const {top} = useElementBounding(titleRef.value)
-  watch(top, (value) => {
-    showTitle.value = value <= 36
-  })
-})
 
 const selectedIds: Ref<Email['id'][]> = ref([])
 const isSelectedAll = computed(() => {
@@ -124,8 +116,14 @@ function onDelete() {
   console.log(selectedIds.value);
 }
 
+const loadMore = ref(false)
+
+function onLoad() {
+  loadMore.value = true
+}
+
 function omMailClick(mail: Email) {
-  router.push(`/mail/${mail.id}`)
+  router.push(`/inbox/${mail.id}`)
 }
 </script>
 

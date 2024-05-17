@@ -11,6 +11,7 @@ router.afterEach((to, from) => {
   document.title = `${to.meta.title}`
   if (isFirstLoad) {
     isFirstLoad = false
+    to.meta.transition = ''
     return
   }
   if (from.fullPath === '/' && to.fullPath === '/') {

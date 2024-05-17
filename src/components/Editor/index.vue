@@ -65,6 +65,7 @@ onMounted(() => {
   const quill = toRaw(myQuillEditor.value).getQuill()
   if (myQuillEditor.value) {
     quill.getModule('toolbar').addHandler('image', imgHandler)
+    myQuillEditor.value.getQuill().blur()
   }
 })
 </script>
@@ -76,6 +77,10 @@ onMounted(() => {
 .ql-toolbar.ql-snow {
   border: none;
   padding: 0;
+}
+
+.ql-formats {
+  margin: 5px 0;
 }
 
 .ql-container.ql-snow {

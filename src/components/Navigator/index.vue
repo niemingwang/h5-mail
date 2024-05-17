@@ -4,7 +4,7 @@
       <li class="mail-nav-list-item" v-touched="['#f2f3f5','#ffffff']" v-for="item in actions" :key="item.text"
           @click="onMailKindClick(item)">
         <van-space align="center">
-          <van-icon :name="item.icon" :size="24" />
+          <van-icon :name="item.icon" :size="26" />
           {{ item.text }}
         </van-space>
         <van-space align="center">
@@ -33,7 +33,7 @@ defineProps({
 })
 
 function onMailKindClick(item: PopoverAction) {
-  router.push({name: 'mails', query: {kind: item.text}}).then(() => {
+  router.push(item.path).then(() => {
     systemStore.changeMailKind(item.text)
   })
 }
@@ -56,7 +56,7 @@ function onMailKindClick(item: PopoverAction) {
   align-items: center;
   justify-content: space-between;
   border-radius: 10px;
-  font-size: 17px;
+  font-size: 18px;
 
   &:hover {
     background-color: #f5f5f7;

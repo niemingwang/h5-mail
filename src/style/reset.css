@@ -6,12 +6,14 @@ body {
     padding: 0;
     box-sizing: border-box;
     background-color: #f1f1f1;
+    overflow: hidden;
 }
 
 * {
     box-sizing: border-box;
     -webkit-user-drag: none;
     touch-action: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 li {
@@ -68,6 +70,7 @@ input {
     max-width: 540px;
     margin: 0 auto;
     left: revert !important;
+    border-top: .2px solid #e4e5ea !important;
 }
 
 .van-action-bar__placeholder {
@@ -76,4 +79,9 @@ input {
 
 .van-haptics-feedback:active {
     opacity: 1 !important;
+}
+
+.van-dialog {
+    border: .2px solid #e4e5ea !important;
+    box-shadow: 0 4px 10px #0000001a !important;
 }

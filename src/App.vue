@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { reactive ,ref} from 'vue'
 import { useRoute } from 'vue-router'
-import Header from "@/views/Mail/Header/index.vue";
+// import Header from "@/components/Header/index.vue";
 import NewMailSheet from '@/components/NewMailSheet/index.vue'
 
 const route = useRoute()
@@ -14,25 +14,41 @@ const themeVars = reactive({
   buttonDefaultHeight: '36px',
   buttonRadius: '8px'
 })
+
+// 控制动画
+const isAnimation = ref(false)
+/**
+ * 动画开始
+ */
+const beforeEnter = () => {
+  console.log(1);
+  isAnimation.value = true
+}
+/**
+ * 动画结束
+ */
+const afterLeave = () => {
+  console.log(2);
+  isAnimation.value = false
+}
 </script>
 
 <template>
   <section class="app-main-wrapper">
     <main class="app-main">
-      <van-config-provider :theme-vars="themeVars" theme-vars-scope="global">
-        <Header />
+      <van-config-provider :theme-vars="themeVars" theme-vars-scope="global" style="height: 100%">
+<!--        <Header />-->
         <RouterView v-slot="{ Component }">
-          <Transition :name="route.meta.transition as string" mode="out-in" :appear="false">
+          <Transition :name="route.meta.transition as string" @before-enter="beforeEnter"
+                      @after-leave="afterLeave">
             <KeepAlive>
-              <component :is="Component" />
+              <component :is="Component" :class="{ 'fixed-page': isAnimation && route.meta.transition }"/>
             </KeepAlive>
           </Transition>
         </RouterView>
       </van-config-provider>
 
       <NewMailSheet></NewMailSheet>
-
-      <van-back-top right="5vw" bottom="10vh" />
     </main>
   </section>
 </template>
@@ -45,10 +61,18 @@ const themeVars = reactive({
 
 .app-main {
   max-width: 540px;
-  min-height: 100vh;
+  height: 100vh;
   background-color: #ffffff;
   font-size: 16px;
   overflow: hidden;
+  position: relative;
+}
+
+.fixed-page {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 .slide-left-enter-active,
@@ -72,6 +96,23 @@ const themeVars = reactive({
 
 .slide-right-enter-to {
   transform: translateX(0);
+}
+
+
+.slide-left-leave-from {
+  transform: translateX(0);
+}
+
+.slide-left-leave-to {
+  transform: translateX(-100%);
+}
+
+.slide-right-leave-from {
+  transform: translateX(0);
+}
+
+.slide-right-leave-to {
+  transform: translateX(100%);
 }
 
 </style>

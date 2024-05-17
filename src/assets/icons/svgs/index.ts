@@ -15,6 +15,9 @@ import filterFill from './filter-fill.svg'
 import avatar from './avatar.svg'
 import mail from './mail.svg'
 import addressBook from './address-book.svg'
+import star from './star.svg'
+import attachment from './attachment.svg'
+import attachmentFile from './attachment-file.svg'
 
 const Icons = {
   archive,
@@ -33,7 +36,10 @@ const Icons = {
   filterFill,
   avatar,
   mail,
-  addressBook
+  addressBook,
+  star,
+  attachment,
+  attachmentFile
 }
 
 export default Icons

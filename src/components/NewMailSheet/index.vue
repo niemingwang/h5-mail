@@ -1,24 +1,30 @@
 <template>
-  <van-popup position="bottom" v-model:show="show" round :lock-scroll="false"
+  <van-popup position="bottom" v-model:show="show" round
              class="new-mail-sheet"
              @open="onOpen"
-             @close="onClose" :before-close="handleBeforeClose">
+             @close="onClose" :before-close="handleBeforeClose" :lock-scroll="false">
     <div class="new-mail-sheet__header">
       <TextButton @click="handleBeforeClose() ? show = false : ''">
         <van-icon name="cross" :size="22" color="#1d1d1f" />
       </TextButton>
+      <van-text-ellipsis v-show="showTitle" :content="subject"
+                         style="max-width: 50%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap" />
+      <van-icon v-show="showTitle" :name="canSend ? Icons.arrowUpActive: Icons.arrowUp" :size="26" />
     </div>
     <van-divider v-show="showTitle" style="margin: 0" />
 
     <div class="mail-title" ref="titleRef">
       <div class="action-title">
         <van-text-ellipsis style="flex: 1" :content="subject" />
-        <van-icon :name="canSend ? Icons.arrowUpActive: Icons.arrowUp" :size="40" />
+        <van-space :size="20">
+          <Attachment />
+          <van-icon :name="canSend ? Icons.arrowUpActive: Icons.arrowUp" :size="40" />
+        </van-space>
       </div>
     </div>
 
-    <van-space fill :size="5" direction="vertical" style="padding: 0 16px">
-      <InputTagField label="收件人：" @change="onReceiverChange" >
+    <van-space fill :size="5" direction="vertical" style="padding: 0 16px;">
+      <InputTagField label="收件人：" @change="onReceiverChange">
         <template #suffix>
           <TextButton show-icon>
             <van-icon :name="Icons.addressBook" :size="26" />
@@ -26,7 +32,7 @@
         </template>
       </InputTagField>
       <van-divider style="margin: 0" />
-      <InputTagField label="抄送：" @change="onReceiverChange" >
+      <InputTagField label="抄送：" @change="onReceiverChange">
         <template #suffix>
           <TextButton show-icon>
             <van-icon :name="Icons.addressBook" :size="26" />
@@ -38,7 +44,7 @@
       <van-divider style="margin: 0" />
       <InputTagField :tag="false" label="主题：" v-model="mailFormModel.subject" />
       <van-divider style="margin: 0" />
-<!--      <van-field style="padding: 0" type="textarea" name="内容" v-model="mailFormModel.content" :rows="10" autosize></van-field>-->
+      <!--      <van-field style="padding: 0" type="textarea" name="内容" v-model="mailFormModel.content" :rows="10" autosize></van-field>-->
       <Editor></Editor>
     </van-space>
   </van-popup>
@@ -68,6 +74,7 @@ import { useElementBounding } from "@vueuse/core";
 import TextButton from '@/components/TextButton/index.vue'
 import InputTagField from '@/components/InputTagField/index.vue'
 import Editor from '@/components/Editor/index.vue'
+import Attachment from '@/components/Attachment/index.vue'
 
 interface TagsProps {
   value: string
@@ -91,7 +98,7 @@ onMounted(() => {
     if (v) {
       const {top} = useElementBounding(titleRef.value)
       watch(top, (value) => {
-        showTitle.value = value < 80
+        showTitle.value = value < 30
       })
     }
   })

@@ -5,46 +5,57 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     component: () => import('@/layout/index.vue'),
     meta: {
-      title: '邮箱'
+      title: '邮箱',
+      transition: 'slide-left'
     }
   },
   {
-    path: '/mails',
-    name: 'mails',
-    component: () => import('@/views/Mail/index.vue'),
+    path: '/inbox',
+    name: 'inbox',
+    component: () => import('@/views/Inbox/index.vue'),
     meta: {
-      title: '邮件'
+      title: '收件箱'
     }
   },
   {
-    path: '/new-mail',
-    name: 'newMail',
-    component: () => import('@/views/NewMail/index.vue'),
-    meta: {
-      title: '新邮件'
-    }
-  },
-  {
-    path: '/mail',
-    redirect() {
-      return '/'
-    },
+    path: '/inbox/:id',
+    component: () => import('@/views/MailDetail/index.vue'),
     meta: {
       title: '邮件详情'
-    },
-    children: [
-      {
-        path: '/mail/:id',
-        component: () => import('@/views/MailDetail/index.vue'),
-      },
-      {
-        path: '',
-        redirect() {
-          return '/'
-        }
-      }
-    ]
-  }
+    }
+  },
+  {
+    path: '/star',
+    name: 'star',
+    component: () => import('@/views/Inbox/index.vue'),
+    meta: {
+      title: '星标邮件'
+    }
+  },
+  {
+    path: '/draft',
+    name: 'draft',
+    component: () => import('@/views/Inbox/index.vue'),
+    meta: {
+      title: '草稿箱'
+    }
+  },
+  {
+    path: '/sent',
+    name: 'sent',
+    component: () => import('@/views/Inbox/index.vue'),
+    meta: {
+      title: '已发送'
+    }
+  },
+  {
+    path: '/basket',
+    name: 'basket',
+    component: () => import('@/views/Inbox/index.vue'),
+    meta: {
+      title: '废纸篓'
+    }
+  },
 ]
 
 export default routes

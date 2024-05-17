@@ -1,7 +1,6 @@
 <template>
   <section>
-    <van-sticky :offset-top="44">
-      <van-nav-bar :border="false">
+      <van-nav-bar :border="false" :fixed="false">
         <template #right>
           <van-space fill :size="5">
             <TextButton>
@@ -13,7 +12,6 @@
           </van-space>
         </template>
       </van-nav-bar>
-    </van-sticky>
 
     <div class="mail-title" ref="titleRef">
       <div class="action-title">
@@ -35,10 +33,11 @@ import { useSystemStore } from "@/store/system.ts";
 const systemStore = useSystemStore()
 
 const actions: PopoverAction[] = [
-  {text: '收件箱', icon: Icons.inbox},
-  {text: '草稿箱', icon: Icons.file},
-  {text: '已发送', icon: Icons.send},
-  {text: '已删除', icon: Icons.trash},
+  {text: '收件箱', icon: Icons.inbox, path: '/inbox'},
+  {text: '星标邮件', icon: Icons.star, path: '/star'},
+  {text: '草稿箱', icon: Icons.file ,  path: '/draft'},
+  {text: '已发送', icon: Icons.send ,  path: '/sent'},
+  {text: '废纸篓', icon: Icons.trash ,  path: '/basket'},
 ];
 
 function createNewMail() {

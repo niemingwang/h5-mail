@@ -1,0 +1,62 @@
+.mail-list-box {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.sub-text {
+    font-weight: lighter;
+    font-size: 12px;
+    color: #b2b2b2;
+}
+
+.second-text {
+    font-weight: lighter;
+    font-size: 13px;
+    color: #262626;
+}
+
+.flex {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+.gap-20 {
+    gap: 20px;
+}
+
+
+.ellipsis-center {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ellipsis-center::before,
+.ellipsis-center::after {
+    content: "";
+    display: inline-block;
+    width: 50%;
+    margin: 0 1em;
+    vertical-align: middle;
+    overflow: hidden;
+}
+
+.ellipsis-center::before {
+    margin-left: -100%;
+}
+
+.ellipsis-center::after {
+    margin-right: -100%;
+}
+
+.ellipsis-center span {
+    display: inline-block;
+    vertical-align: middle;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.space-last-child div:last-child {
+    flex: 1;
+}
