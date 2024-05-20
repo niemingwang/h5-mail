@@ -6,7 +6,7 @@
     <div class="mail-title" :style="{display: focus ? 'none' : 'block'}">
       <span>{{ isEdit && selectedIds.length ? `已选${selectedIds.length}封` : systemStore.mailKind }}</span>
       <span class="mail-title--desc">
-          <van-text-ellipsis :content="emails.length + ' 封邮件'" />
+          <van-text-ellipsis :content="mailList.length + ' 封邮件'" />
         </span>
     </div>
 
@@ -17,8 +17,8 @@
     <van-list style="overflow: hidden auto;z-index:1;padding-bottom: 20px" @load="onLoad" v-model:loading="loadMore"
               safe-area-inset-bottom>
       <van-pull-refresh v-model="loading" @refresh="onRefresh">
-        <EmailList :mails="emails" @checked-change="handleChecked" :selected-ids="selectedIds"
-                   @mail-click="omMailClick" />
+        <EmailList :mails="mailList" @checked-change="handleChecked" :selected-ids="selectedIds"
+                   @mail-click="omMailClick" @remove="handleMailRemove" />
       </van-pull-refresh>
 
       <van-back-top right="5vw" bottom="10vh" />
@@ -63,6 +63,8 @@ type Email = {
   date: string,
   status: string
 }
+
+const mailList = ref(emails)
 
 const showTitle = ref(false)
 const systemStore = useSystemStore()
@@ -123,7 +125,13 @@ function onLoad() {
 }
 
 function omMailClick(mail: Email) {
+  console.log('???');
   router.push(`/inbox/${mail.id}`)
+}
+
+function handleMailRemove(mail: Email) {
+  console.log(mail);
+  mailList.value.splice(mailList.value.findIndex(item => item.id === mail.id), 1)
 }
 </script>
 
