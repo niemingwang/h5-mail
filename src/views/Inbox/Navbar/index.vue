@@ -16,9 +16,6 @@
     <template #right>
       <van-space fill :size="5">
         <TextButton @click="onEdit">{{ isEdit ? '取消' : '编辑' }}</TextButton>
-        <TextButton v-show="!isEdit" @click="createNewMail">
-          <van-icon :name="Icons.filterFill" :size="22" />
-        </TextButton>
         <TextButton v-show="!isEdit" @click="createNewMail" at-r>
           <van-icon :name="Icons.edit" :size="22" />
         </TextButton>

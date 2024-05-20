@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive ,ref} from 'vue'
+import { reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
 // import Header from "@/components/Header/index.vue";
 import NewMailSheet from '@/components/NewMailSheet/index.vue'
@@ -12,7 +12,8 @@ const themeVars = reactive({
   overlayBackground: 'rgba(0,0,0,0.2)',
   navBarTitleFontSize: '17px',
   buttonDefaultHeight: '36px',
-  buttonRadius: '8px'
+  buttonRadius: '8px',
+  searchActionFontSize: '16px'
 })
 
 // 控制动画
@@ -37,12 +38,12 @@ const afterLeave = () => {
   <section class="app-main-wrapper">
     <main class="app-main">
       <van-config-provider :theme-vars="themeVars" theme-vars-scope="global" style="height: 100%">
-<!--        <Header />-->
+        <!--        <Header />-->
         <RouterView v-slot="{ Component }">
           <Transition :name="route.meta.transition as string" @before-enter="beforeEnter"
                       @after-leave="afterLeave">
             <KeepAlive>
-              <component :is="Component" :class="{ 'fixed-page': isAnimation && route.meta.transition }"/>
+              <component :is="Component" :class="{ 'fixed-page': isAnimation && route.meta.transition }" />
             </KeepAlive>
           </Transition>
         </RouterView>

@@ -106,7 +106,7 @@ function onRemove(mail: Email) {
 .list-move, /* 对移动中的元素应用的过渡 */
 .list-enter-active,
 .list-leave-active {
-  transition: all 0.5s ease;
+  transition: all 0.25s ease;
 }
 
 .list-enter-from,

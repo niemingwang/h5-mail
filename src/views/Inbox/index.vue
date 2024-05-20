@@ -3,24 +3,31 @@
     <Navbar @select-all="onSelectedAll" :is-selected-all="isSelectedAll"
             :selected-count="selectedIds.length" :border="showTitle" />
 
-    <div class="mail-title" :style="{display: focus ? 'none' : 'block'}">
-      <span>{{ isEdit && selectedIds.length ? `已选${selectedIds.length}封` : systemStore.mailKind }}</span>
-      <span class="mail-title--desc">
+    <div class="mail-title">
+      <section v-if="!focus">
+        <span>{{ isEdit && selectedIds.length ? `已选${selectedIds.length}封` : systemStore.mailKind }}</span>
+        <span class="mail-title--desc">
           <van-text-ellipsis :content="mailList.length + ' 封邮件'" />
         </span>
+      </section>
+      <section v-else>
+        <span>{{ `在“${systemStore.mailKind}”内搜索` }}</span>
+      </section>
     </div>
 
-    <van-divider style="margin: 0; padding: 0 16px" />
-    <van-search @focus="focus = true" @blur="focus = false" :show-action="focus" placeholder="搜索" />
+    <!--  搜索  -->
+    <van-search @focus="focus = true" @cancel="focus = false" :show-action="focus" placeholder="搜索" />
+    <Segment v-if="focus" @change="onSegmentChange" />
     <van-divider style="margin: 0; padding: 0 16px" />
 
-    <van-list style="overflow: hidden auto;z-index:1;padding-bottom: 20px" @load="onLoad" v-model:loading="loadMore"
+    <van-list style="overflow: hidden auto; z-index:1; padding-bottom: 20px" @load="onLoad" v-model:loading="loadMore"
               safe-area-inset-bottom>
       <van-pull-refresh v-model="loading" @refresh="onRefresh">
         <EmailList :mails="mailList" @checked-change="handleChecked" :selected-ids="selectedIds"
                    @mail-click="omMailClick" @remove="handleMailRemove" />
       </van-pull-refresh>
 
+      <!--   回到顶部   -->
       <van-back-top right="5vw" bottom="10vh" />
 
     </van-list>
@@ -54,6 +61,7 @@ import emails from '@/mock/emails.ts'
 import { useSystemStore } from "@/store/system.ts";
 import { useRouter } from "vue-router";
 import Icons from "@/assets/icons/svgs";
+import Segment from '@/components/Segmented/index.vue'
 
 type Email = {
   id: string,
@@ -125,13 +133,15 @@ function onLoad() {
 }
 
 function omMailClick(mail: Email) {
-  console.log('???');
   router.push(`/inbox/${mail.id}`)
 }
 
 function handleMailRemove(mail: Email) {
-  console.log(mail);
   mailList.value.splice(mailList.value.findIndex(item => item.id === mail.id), 1)
+}
+
+function onSegmentChange(val: string) {
+  console.log(val);
 }
 </script>
 

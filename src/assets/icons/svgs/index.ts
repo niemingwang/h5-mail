@@ -18,6 +18,7 @@ import addressBook from './address-book.svg'
 import star from './star.svg'
 import attachment from './attachment.svg'
 import attachmentFile from './attachment-file.svg'
+import search from './search.svg'
 
 const Icons = {
   archive,
@@ -39,7 +40,8 @@ const Icons = {
   addressBook,
   star,
   attachment,
-  attachmentFile
+  attachmentFile,
+  search
 }
 
 export default Icons

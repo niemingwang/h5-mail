@@ -19,6 +19,7 @@ declare module 'vue' {
     NewMailSheet: typeof import('./src/components/NewMailSheet/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Segmented: typeof import('./src/components/Segmented/index.vue')['default']
     TextButton: typeof import('./src/components/TextButton/index.vue')['default']
     VanActionBar: typeof import('vant/es')['ActionBar']
     VanBackTop: typeof import('vant/es')['BackTop']
