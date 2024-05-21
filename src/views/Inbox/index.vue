@@ -5,9 +5,9 @@
 
     <div class="mail-title">
       <section v-if="!focus">
-        <span>{{ isEdit && selectedIds.length ? `已选${selectedIds.length}封` : systemStore.mailKind }}</span>
+        <span>{{ isEdit && selectedIds.length ? `已选中 ${selectedIds.length} 封邮件` : systemStore.mailKind }}</span>
         <span class="mail-title--desc">
-          <van-text-ellipsis :content="mailList.length + ' 封邮件'" />
+          <van-text-ellipsis :content="mailList.length + ` 封邮件` +  (unread ? `（${unread} 封未读邮件）` : '')" />
         </span>
       </section>
       <section v-else>
@@ -16,15 +16,15 @@
     </div>
 
     <!--  搜索  -->
-    <van-search @focus="focus = true" @cancel="focus = false" :show-action="focus" placeholder="搜索" />
-    <Segment v-if="focus" @change="onSegmentChange" />
+    <van-search v-show="!isEdit" @focus="focus = true" @cancel="focus = false" :show-action="focus" placeholder="搜索" />
+    <Segment v-if="focus && !isEdit" @change="onSegmentChange" />
     <van-divider style="margin: 0; padding: 0 16px" />
 
     <van-list style="overflow: hidden auto; z-index:1; padding-bottom: 20px" @load="onLoad" v-model:loading="loadMore"
               safe-area-inset-bottom>
       <van-pull-refresh v-model="loading" @refresh="onRefresh">
         <EmailList :mails="mailList" @checked-change="handleChecked" :selected-ids="selectedIds"
-                   @mail-click="omMailClick" @remove="handleMailRemove" />
+                   @mail-click="omMailClick" @remove="handleMailRemove" @toggle-read-status="handleToggleReadStatus"/>
       </van-pull-refresh>
 
       <!--   回到顶部   -->
@@ -34,13 +34,10 @@
 
     <ActionBar v-show="systemStore.isEdit" style="z-index: 2">
       <template #left>
-        <van-icon :name="Icons.filterFill" size="26" />
+        <MailMark :selected-mail="selectedMails"></MailMark>
       </template>
       <template #center>
-        <van-space direction="vertical" :size="-2" align="center">
-          <span class="filter-mode">过滤方式：</span>
-          <span class="filter-way">未读</span>
-        </van-space>
+        <MailMove :selected-mail="selectedMails"></MailMove>
       </template>
       <template #right>
       <span :class="['text-button', selectedIds.length ? '' : 'disabled']" v-if="isEdit"
@@ -62,15 +59,9 @@ import { useSystemStore } from "@/store/system.ts";
 import { useRouter } from "vue-router";
 import Icons from "@/assets/icons/svgs";
 import Segment from '@/components/Segmented/index.vue'
-
-type Email = {
-  id: string,
-  subject: string,
-  body: string,
-  from: string,
-  date: string,
-  status: string
-}
+import MailMove from '@/components/MailMove/index.vue'
+import MailMark from '@/components/MailMark/index.vue'
+import type { Mail } from '@/types.ts'
 
 const mailList = ref(emails)
 
@@ -88,7 +79,8 @@ const onRefresh = () => {
   }, 1000);
 };
 
-const selectedIds: Ref<Email['id'][]> = ref([])
+const selectedIds: Ref<Mail['id'][]> = ref([])
+const selectedMails: Ref<Mail[]> = ref([])
 const isSelectedAll = computed(() => {
   return selectedIds.value.length === emails.length
 })
@@ -98,11 +90,13 @@ watch(() => systemStore.isEdit, (newValue) => {
   }
 })
 
-function handleChecked(email: Email) {
+function handleChecked(email: Mail) {
   if (selectedIds.value.includes(email.id)) {
     selectedIds.value = selectedIds.value.filter(id => id !== email.id)
+    selectedMails.value = selectedMails.value.filter(mail => mail.id !== email.id)
   } else {
     selectedIds.value.push(email.id)
+    selectedMails.value.push(email)
   }
 }
 
@@ -118,6 +112,12 @@ function createNewMail() {
   systemStore.changeNewMailState(true)
 }
 
+const unread = computed(() => {
+  return mailList.value.reduce((acc, cur) => {
+    return acc + (cur.status === 'unread' ? 1 : 0)
+  }, 0)
+})
+
 const isEdit = computed(() => {
   return systemStore.isEdit
 })
@@ -132,12 +132,17 @@ function onLoad() {
   loadMore.value = true
 }
 
-function omMailClick(mail: Email) {
+function omMailClick(mail: Mail) {
   router.push(`/inbox/${mail.id}`)
 }
 
-function handleMailRemove(mail: Email) {
+function handleMailRemove(mail: Mail) {
   mailList.value.splice(mailList.value.findIndex(item => item.id === mail.id), 1)
+}
+
+// 切换已读/未读
+function handleToggleReadStatus(mail: Mail)  {
+  mail.status = mail.status === 'unread' ? 'read' : 'unread'
 }
 
 function onSegmentChange(val: string) {

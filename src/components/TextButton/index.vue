@@ -1,5 +1,5 @@
 <template>
-  <button class="text-button" v-touched="['#88c0fa','#ffffff']" :style="{
+  <button :class="['text-button', disabled ? 'disabled' : '']" v-touched="['#88c0fa','#ffffff']" :style="{
     'font-size': props.size + 'px',
     'pointer-events': props.disabled ? 'none' : 'auto',
     marginLeft: atL ? showIcon ?  '-12px' : '-6px' : '',
@@ -48,5 +48,9 @@ const props = defineProps({
   cursor: pointer;
   padding: 6px;
   border-radius: 6px;
+}
+
+.disabled {
+  color: #b2b2b2;
 }
 </style>

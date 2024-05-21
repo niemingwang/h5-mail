@@ -1,54 +1,52 @@
 <template>
   <div class="email-cell" :style="emailCellStyle">
-    <div v-if="isEdit" class="email-cell__edit">
-      <van-checkbox :model-value="checked" />
-    </div>
-    <div class="email-cell__content"
-         @touchstart="onTouchStart"
-         @touchend="onTouchEnd"
-         @touchmove="onTouchMove"
-         :style="emailCellStyle"
-    >
+      <div v-if="isEdit" class="email-cell__edit">
+        <van-checkbox :model-value="checked" />
+      </div>
       <div class="email-cell__badge">
-        <van-badge
-            v-show="email.status === 'unread'"
-            dot
-            color="#1989fa"
-        />
+        <van-config-provider :theme-vars="{badgeDotSize: '10px'}">
+          <van-badge
+              v-show="email.status === 'unread'"
+              dot
+              color="#1989fa"
+              :position="'center' as BadgePosition"
+          />
+        </van-config-provider>
       </div>
-      <div class="email-cell__title">
-        <span>{{ email.from }}</span>
-        <span>
+      <div class="email-cell__content"
+           @touchstart="onTouchStart"
+           @touchend="onTouchEnd"
+           @touchmove="onTouchMove"
+           :style="emailCellStyle"
+      >
+        <div class="email-cell__title">
+          <span>{{ email.from }}</span>
+          <span>
           {{ email.date }}
-          <van-icon name="arrow" v-show="!isEdit" />
+          <van-icon name="arrow" v-show="!isEdit" style="margin-left: auto"/>
         </span>
+        </div>
+        <div class="email-cell__subject">
+          <span>{{email.subject}}</span>
+          <van-icon :name="Icons.attachmentPlain" />
+        </div>
+        <div class="email-cell__body">
+          <van-text-ellipsis :content="email.body" :rows="2" :key="isEdit.toString()" />
+        </div>
       </div>
-      <div class="email-cell__subject">
-        <van-text-ellipsis :content="email.subject" :key="isEdit.toString()" />
-      </div>
-      <div class="email-cell__body">
-        <van-text-ellipsis :content="email.body" :rows="2" :key="isEdit.toString()" />
-      </div>
-    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import { defineProps, ref, computed } from 'vue'
-
-type Email = {
-  id: string,
-  subject: string,
-  body: string,
-  from: string,
-  date: string
-  status: string
-}
+import Icons from '@/assets/icons/svgs/index.ts'
+import { BadgePosition } from "vant";
+import type { Mail } from '@/types.ts'
 
 const props = defineProps({
   email: {
-    type: Object as PropType<Email>,
+    type: Object as PropType<Mail>,
     required: true
   },
   isEdit: {
@@ -85,12 +83,12 @@ function onTouchMove() {
 <style scoped>
 .email-cell {
   display: flex;
-  align-items: center;
-  gap: 5px;
+  align-items: start;
+  padding: var(--van-cell-vertical-padding) var(--van-cell-horizontal-padding);
 }
 
 .email-cell__edit {
-  margin-left: 15px;
+  margin: auto;
 }
 
 .email-cell__content {
@@ -99,7 +97,6 @@ function onTouchMove() {
   min-height: 46px;
   display: flex;
   flex-direction: column;
-  padding: var(--van-cell-vertical-padding) var(--van-cell-horizontal-padding);
   overflow: hidden;
   color: var(--van-cell-text-color);
   font-size: 15px;
@@ -108,9 +105,13 @@ function onTouchMove() {
 }
 
 .email-cell__badge {
-  position: absolute;
-  top: 14px;
-  left: 1px;
+  width: 33px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  -webkit-box-align: center;
+  align-items: center;
+  padding-top: 3px;
 }
 
 .email-cell__title {
@@ -132,6 +133,25 @@ function onTouchMove() {
     font-size: 14px;
     text-align: right;
     color: var(--van-cell-label-color);
+  }
+}
+
+.email-cell__subject {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+
+  span {
+    margin-right: 5px;
+    margin-inline-end: 5px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    align-self: center;
+  }
+
+  i {
+    margin-left: auto;
   }
 }
 

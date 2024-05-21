@@ -18,6 +18,7 @@ import addressBook from './address-book.svg'
 import star from './star.svg'
 import attachment from './attachment.svg'
 import attachmentFile from './attachment-file.svg'
+import attachmentPlain from './attachment-plain.svg'
 import search from './search.svg'
 
 const Icons = {
@@ -41,6 +42,7 @@ const Icons = {
   star,
   attachment,
   attachmentFile,
+  attachmentPlain,
   search
 }
 

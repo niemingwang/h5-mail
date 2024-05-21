@@ -3,7 +3,7 @@
     <van-swipe-cell v-for="mail in mails" :key="mail.id" stop-propagation :disabled="isEdit" @open="onOpen"
                     @close="onClose">
       <template #left>
-        <van-button square type="primary" text="已读" style="width: 70px;">
+        <van-button square type="primary" text="已读" style="width: 70px;" @click="handleToggleIsRead(mail)">
           <van-space direction="vertical" :size="2">
             <van-badge :dot="mail.status !== 'unread'" color="#ffffff" :offset="[-2,5]">
               <van-icon v-if="mail.status !== 'unread'" :name="Icons.mailFill" :size="22" />
@@ -40,22 +40,14 @@ import { PropType, defineProps, computed, defineEmits, ref } from 'vue'
 import EmailCell from '@/components/EmailCell/index.vue'
 import Icons from '@/assets/icons/svgs/index.ts'
 import { useSystemStore } from "@/store/system.ts";
-
-type Email = {
-  id: string,
-  subject: string,
-  body: string,
-  from: string,
-  date: string,
-  status: string
-}
+import type { Mail } from '@/types.ts'
 
 const systemStore = useSystemStore()
-const emits = defineEmits(['checked-change', 'mail-click', 'remove'])
+const emits = defineEmits(['checked-change', 'mail-click', 'toggle-read-status', 'remove'])
 
 const props = defineProps({
   mails: {
-    type: Array as PropType<Email[]>,
+    type: Array as PropType<Mail[]>,
     required: true
   },
   selectedIds: {
@@ -80,7 +72,7 @@ function isChecked(id: string) {
   return props.selectedIds.includes(id)
 }
 
-function omMailClick(mail: Email) {
+function omMailClick(mail: Mail) {
   if (opened.value) return
   isEdit.value ? emits('checked-change', mail) : emits('mail-click', mail)
 }
@@ -95,7 +87,12 @@ function onClose() {
   opened.value = false
 }
 
-function onRemove(mail: Email) {
+function handleToggleIsRead(mail: Mail) {
+  opened.value = false
+  emits('toggle-read-status', mail)
+}
+
+function onRemove(mail: Mail) {
   opened.value = false
   emits('remove', mail)
 }

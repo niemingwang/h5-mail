@@ -13,7 +13,9 @@ const themeVars = reactive({
   navBarTitleFontSize: '17px',
   buttonDefaultHeight: '36px',
   buttonRadius: '8px',
-  searchActionFontSize: '16px'
+  searchActionFontSize: '16px',
+  popoverActionWidth: '200px',
+  popoverActionFontSize: 'var(--van-font-size-lg)'
 })
 
 // 控制动画
