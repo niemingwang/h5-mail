@@ -7,6 +7,7 @@ import { resolve } from 'path'
 
 export default defineConfig(() => {
   return {
+    base: '/h5-mail/',
     plugins: [
       vue(),
       AutoImport({
